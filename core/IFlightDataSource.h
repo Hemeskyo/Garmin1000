@@ -3,5 +3,5 @@
 
 struct IFlightDataSource{
     virtual ~IFlightDataSource() = default;
-    virtual FlightData next(double dt_s) = 0;
+    virtual FlightData getFlightdata() const = 0;
 };

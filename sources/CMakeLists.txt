@@ -1,5 +1,6 @@
 add_library(sources
-SimulatedSource.cpp)
+SimulatedSource.cpp
+Autopilot.cpp)
 
 target_link_libraries(sources 
 PUBLIC core)

@@ -1,26 +1,39 @@
 #include <iostream>
 #include "SimulatedSource.h"
+#include "Autopilot.h"
 #include <thread>
 #include <chrono>
+
 int main()
 {
     SimulatedSource sim;
     IFlightDataSource &src = sim;
+    Autopilot autopilot;
+    IAutopilot &ap = autopilot;
 
-    sim.setHeadingTarget(100);
-    sim.setAp(true);
+    AutopilotTargets targets;
+    sim.randomizeApTargets(targets);
 
-    for (int i = 0; i < 12; i++)
+    while (std::abs(src.getFlightdata().altitude_ft - targets.altitude_ft) > 2 &&
+           (std::abs(src.getFlightdata().heading_deg - targets.heading_deg) > 2) &&
+           (std::abs(src.getFlightdata().ias_kt - targets.ias_kt) > 2))
     {
 
-        FlightData d = src.next(5.0);
+        FlightData d = src.getFlightdata();
+
+        ap.setAP(true);
+
+        ControlCommand cmd = ap.computeCommand(d, targets, 1.0);
+
+        sim.applyCommand(cmd, 1.0);
 
         std::cout
             << "ALT " << d.altitude_ft
             << " | IAS " << d.ias_kt
             << " | HDG " << d.heading_deg
-            << " | AP " << (d.ap_engaged ? "ON" : "OFF")
+            << " | AP " << (ap.getAPStatus() ? "ON" : "OFF")
             << "\n";
+
         std::this_thread::sleep_for(std::chrono::seconds(1));
     };
 

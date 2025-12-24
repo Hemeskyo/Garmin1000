@@ -7,15 +7,20 @@ int main()
     SimulatedSource sim;
     IFlightDataSource &src = sim;
 
+    sim.setHeadingTarget(100);
+    sim.setAp(true);
+
     for (int i = 0; i < 12; i++)
     {
-        sim.setHeadingTarget(280);
-        sim.setAp(true);
-        FlightData d = src.next(1.0);
-        
-        std::cout << "Altitude: " << d.altitude_ft
-                  << "\nIAS: " << d.ias_kt
-                  << "\nHDG: " << d.heading_deg;
+
+        FlightData d = src.next(5.0);
+
+        std::cout
+            << "ALT " << d.altitude_ft
+            << " | IAS " << d.ias_kt
+            << " | HDG " << d.heading_deg
+            << " | AP " << (d.ap_engaged ? "ON" : "OFF")
+            << "\n";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     };
 

@@ -1,5 +1,5 @@
 #include "SimulatedSource.h"
-#include <bits/stdc++.h>
+#include <cstdlib>
 
 FlightData SimulatedSource::next(double dt_s)
 {
@@ -30,20 +30,26 @@ FlightData SimulatedSource::next(double dt_s)
         }
 
         // Heading handling
-        double headingDiff = heading_deg_ - hdg_target_deg_;
-        while (headingDiff>180) headingDiff -= 360.0;
-        while (headingDiff<-180) headingDiff += 360.0;
+        double headingDiff = hdg_target_deg_ - heading_deg_;
+        while (headingDiff > 180)
+            headingDiff -= 360.0;
+        while (headingDiff < -180)
+            headingDiff += 360.0;
 
-        if(std::abs(headingDiff) <= hdg_target_deg_){
+        if (std::abs(headingDiff) <= headingStep)
+        {
             heading_deg_ = hdg_target_deg_;
-        } else 
-        { 
-            heading_deg_ += (headingDiff > 0 ? headingDiff : - headingDiff);
         }
-        if(heading_deg_ >= 360.0) {
+        else
+        {
+            heading_deg_ += (headingDiff > 0 ? headingStep : -headingStep);
+        }
+        if (heading_deg_ >= 360.0)
+        {
             heading_deg_ -= 360.0;
         }
-        if(heading_deg_ < 0.0){
+        if (heading_deg_ < 0.0)
+        {
             heading_deg_ += 360;
         }
     }
@@ -78,3 +84,8 @@ void SimulatedSource::setHeadingTarget(double hdg_target_deg)
 {
     hdg_target_deg_ = hdg_target_deg;
 }
+
+void SimulatedSource::setVerticalSpeedTarget(double vs_target_fpm)
+{
+    vs_target_fpm_ = vs_target_fpm;
+};

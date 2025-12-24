@@ -8,7 +8,7 @@ struct SimulatedSource : IFlightDataSource, IFlightControls
     void setIasTarget(double ias_target_kt) override;
     void setAltTarget(double alt_target_ft) override;
     void setHeadingTarget(double hdg_target_deg) override;
-    void setVerticalSpeedTarget(double vs_target_deg) override;
+    void setVerticalSpeedTarget(double vs_target_fpm) override;
     void setAp(bool apState) override;
 
 private:

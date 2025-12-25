@@ -3,21 +3,30 @@
 #include "Autopilot.h"
 #include <thread>
 #include <chrono>
-#include "ConsoleObserver.h"
+#include "ConsoleFlightDataObserver.h"
+#include "QtFlightDataObserver.h"
 #include "FlightDataSubject.h"
+#include <QApplication>
+#include <QTimer>
 
-int main()
+int main(int argc, char *argv[])
 {
+    QApplication app(argc, argv);
+
     SimulatedSource sim;
     IFlightDataSource &src = sim;
     Autopilot autopilot;
     IAutopilot &ap = autopilot;
     AutopilotTargets targets;
 
-    ConsoleObserver consoleLog;
+    ConsoleFlightDataObserver consoleObserver;
+    QtFlightDataObserver *qtObserver = new QtFlightDataObserver();
+    qtObserver->show();
+
     FlightDataSubject flightDataSubject;
 
-    flightDataSubject.addObserver(&consoleLog);
+    flightDataSubject.addObserver(&consoleObserver);
+    flightDataSubject.addObserver(qtObserver);
 
     sim.randomizeApTargets(targets);
     ap.setAP(true);
@@ -37,5 +46,5 @@ int main()
         // std::this_thread::sleep_for(std::chrono::seconds(1));
     };
 
-    return 0;
+    return app.exec();
 };

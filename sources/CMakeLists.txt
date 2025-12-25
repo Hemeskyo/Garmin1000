@@ -1,7 +1,12 @@
+set(CMAKE_AUTOMOC ON)
+
 add_library(sources
 SimulatedSource.cpp
 Autopilot.cpp
-ConsoleObserver.cpp)
+ConsoleFlightDataObserver.cpp
+QtFlightDataObserver.cpp
+../core/QtFlightDataObserver.h
+)
 
 target_link_libraries(sources 
 PUBLIC core)

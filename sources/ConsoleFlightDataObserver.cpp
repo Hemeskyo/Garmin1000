@@ -1,7 +1,7 @@
-#include "ConsoleObserver.h"
+#include "ConsoleFlightDataObserver.h"
 #include <iostream>
 
-void ConsoleObserver::onFlightDataChanged(const FlightData &data)
+void ConsoleFlightDataObserver::onFlightDataChanged(const FlightData &data)
 {
     std::cout
         << "ALT " << data.altitude_ft
@@ -10,7 +10,7 @@ void ConsoleObserver::onFlightDataChanged(const FlightData &data)
         << "\n";
 }
 
-void ConsoleObserver::onAutopilotChanged(const AutopilotTargets &targets, bool engaged)
+void ConsoleFlightDataObserver::onAutopilotChanged(const AutopilotTargets &targets, bool engaged)
 {
     std::cout
         << "Autopilot settings \n"

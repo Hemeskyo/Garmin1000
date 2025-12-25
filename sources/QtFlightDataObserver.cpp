@@ -19,7 +19,7 @@ QtFlightDataObserver::QtFlightDataObserver(QWidget *parent) : QWidget(parent)
 void QtFlightDataObserver::onFlightDataChanged(const FlightData &data)
 {
     altitudeLabel_->setText(QString("Altitude: %1 ft").arg(data.altitude_ft));
-    speedLabel_->setText(QString("Speed: 1% kt").arg(data.ias_kt));
+    speedLabel_->setText(QString("Speed: %1 kt").arg(data.ias_kt));
     headingLabel_->setText(QString("Heading: %1").arg(data.heading_deg));
 }
 
@@ -31,4 +31,5 @@ void QtFlightDataObserver::onAutopilotChanged(const AutopilotTargets &targets, b
                        .arg(targets.altitude_ft)
                        .arg(targets.ias_kt)
                        .arg(targets.heading_deg);
+    autopilotLabel_->setText(text);
 }

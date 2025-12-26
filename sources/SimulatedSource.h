@@ -14,6 +14,8 @@ private:
     double altitude_ft_ = 0.0;
     double vs_fpm_ = 0.0;
     double ias_kt_ = 0.0;
+    double pitch_deg_=0.0;
+    double roll_deg_=0.0;
     bool ap_engaged_ = false;
 
 };

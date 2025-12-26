@@ -1,6 +1,7 @@
 #include "SimulatedSource.h"
 #include <cstdlib>
 #include <random>
+#include <clamp>
 
 FlightData SimulatedSource::getFlightdata() const
 {
@@ -10,6 +11,8 @@ FlightData SimulatedSource::getFlightdata() const
     d.ias_kt = ias_kt_;
     d.heading_deg = heading_deg_;
     d.vs_fpm = vs_fpm_;
+    d.pitch_deg = pitch_deg_;
+    d.roll_deg = roll_deg_;
 
     return d;
 }
@@ -40,4 +43,11 @@ void SimulatedSource::applyCommand(const ControlCommand &cmd, double dt_s)
 
     vs_fpm_ = cmd.vs_fpm;
     altitude_ft_ += vs_fpm_ * (dt_s / 60.0);
+
+    pitch_deg_ = vs_fpm_ / 200.0;
+    pitch_deg_ = std::clamp(pitch_deg_, -15.0, 15.0);
+
+    roll_deg_ = cmd.heading_rate_deg_per_sec * 5.0;
+    roll_deg_ = std::clamp(roll_deg_, -30.0, 30.0);
+
 }

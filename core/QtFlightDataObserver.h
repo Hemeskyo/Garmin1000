@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
+#include "PrimaryFlightDisplay.h"
 
 class QtFlightDataObserver : public QWidget, public IFlightDataObserver
 {
@@ -20,4 +21,5 @@ private:
     QLabel *headingLabel_;
     QLabel *autopilotLabel_;
     QVBoxLayout *layout_;
+    PrimaryFlightDisplay *primaryFlightDisplay_;
 };

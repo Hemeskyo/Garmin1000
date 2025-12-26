@@ -5,7 +5,9 @@ SimulatedSource.cpp
 Autopilot.cpp
 ConsoleFlightDataObserver.cpp
 QtFlightDataObserver.cpp
+PrimaryFlightDisplay.cpp
 ../core/QtFlightDataObserver.h
+../core/PrimaryFlightDisplay.h
 )
 
 target_link_libraries(sources 

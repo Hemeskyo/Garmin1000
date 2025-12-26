@@ -1,7 +1,7 @@
 #include "SimulatedSource.h"
 #include <cstdlib>
 #include <random>
-#include <clamp>
+#include <algorithm>
 
 FlightData SimulatedSource::getFlightdata() const
 {

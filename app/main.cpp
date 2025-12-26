@@ -8,6 +8,7 @@
 #include "FlightDataSubject.h"
 #include <QApplication>
 #include <QTimer>
+#include <QObject>
 
 int main(int argc, char *argv[])
 {
@@ -32,19 +33,25 @@ int main(int argc, char *argv[])
     ap.setAP(true);
 
     flightDataSubject.notifyAutopilot(targets, ap.getAPStatus());
+    double dt_s = 0.1;
+    QTimer *timer = new QTimer();
+    QObject::connect(timer, &QTimer::timeout, [&]()
+        {
+            FlightData d = src.getFlightdata();
+            ControlCommand cmd = ap.computeCommand(d, targets, dt_s);
+            sim.applyCommand(cmd, dt_s);
 
-    while (std::abs(src.getFlightdata().altitude_ft - targets.altitude_ft) > 2 ||
-           (std::abs(src.getFlightdata().heading_deg - targets.heading_deg) > 2) ||
-           (std::abs(src.getFlightdata().ias_kt - targets.ias_kt) > 2))
-    {
+            flightDataSubject.notifyFlightData(d);
 
-        FlightData d = src.getFlightdata();
-        ControlCommand cmd = ap.computeCommand(d, targets, 1.0);
-        sim.applyCommand(cmd, 1.0);
+            if ((std::abs(src.getFlightdata().altitude_ft - targets.altitude_ft) < 2 &&
+                 (std::abs(src.getFlightdata().heading_deg - targets.heading_deg) < 2) &&
+                 (std::abs(src.getFlightdata().ias_kt - targets.ias_kt) < 2)))
+            {
+                timer->stop();
+            }
+        });
 
-        flightDataSubject.notifyFlightData(d);
-        // std::this_thread::sleep_for(std::chrono::seconds(1));
-    };
+        timer->start(dt_s * 1000);
 
-    return app.exec();
+        return app.exec();
 };

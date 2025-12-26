@@ -20,7 +20,7 @@ ControlCommand Autopilot::computeCommand(const FlightData &flightData, const Aut
     {
         return newControlCommand;
     }
-    double speedStep = 2.0 * dt_s;
+    double speedStep = 100.0 * dt_s;
     double maxTurnRate = 3.0;
 
     double headingDiff = autopilotTargets.heading_deg - flightData.heading_deg;
